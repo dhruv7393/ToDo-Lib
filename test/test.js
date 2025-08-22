@@ -1,4 +1,4 @@
-const sortByKey = require("../index");
+const { sortByKey } = require("../index");
 
 // Test data
 const testData = [

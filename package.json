@@ -1,7 +1,7 @@
 {
   "name": "dhruvtodo",
-  "version": "1.0.0",
-  "description": "A lightweight utility library for handling common task in todo",
+  "version": "2.0.0",
+  "description": "A comprehensive todo management library with task and category utilities, plus array sorting functions",
   "main": "index.js",
   "scripts": {
     "test": "node test/test.js",
@@ -14,24 +14,40 @@
     "utility",
     "sorting",
     "javascript",
-    "es6"
+    "es6",
+    "todo",
+    "task",
+    "category",
+    "management"
   ],
   "author": "Dhruv Desai",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/object-sort-utils.git"
+    "url": "https://github.com/yourusername/dhruvtodo.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/object-sort-utils/issues"
+    "url": "https://github.com/yourusername/dhruvtodo/issues"
   },
-  "homepage": "https://github.com/yourusername/object-sort-utils#readme",
+  "homepage": "https://github.com/yourusername/dhruvtodo#readme",
   "engines": {
     "node": ">=12.0.0"
   },
   "files": [
     "index.js",
     "sort.js",
+    "sortData.js",
+    "addTask.js",
+    "deleteTask.js",
+    "UpdateTask.js",
+    "toggleTaskDone.js",
+    "updateTaskPriority.js",
+    "addCategory.js",
+    "deleteCategoryById.js",
+    "toggleCategoryDone.js",
+    "updateCategoryPriority.js",
+    "modifiedCategories.js",
+    "chron.js",
     "README.md",
     "LICENSE"
   ]
