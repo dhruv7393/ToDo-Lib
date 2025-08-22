@@ -1,6 +1,6 @@
 {
   "name": "dhruvtodo",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A comprehensive todo management library with task and category utilities, plus array sorting functions",
   "main": "index.js",
   "scripts": {
@@ -24,12 +24,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/dhruvtodo.git"
+    "url": "https://github.com/dhruv7393/ToDo-Lib.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/dhruvtodo/issues"
+    "url": "https://github.com/dhruv7393/ToDo-Lib/issues"
   },
-  "homepage": "https://github.com/yourusername/dhruvtodo#readme",
+  "homepage": "https://github.com/dhruv7393/ToDo-Lib#readme",
   "engines": {
     "node": ">=12.0.0"
   },

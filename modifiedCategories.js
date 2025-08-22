@@ -1,6 +1,3 @@
-const fs = require("fs");
-const path = require("path");
-
 /**
  * Compares original and updated ToDo data and returns categories that have been modified
  * @param {Array} originalData - Original array of categories from ToDoMock
