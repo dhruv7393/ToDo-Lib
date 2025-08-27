@@ -1,5 +1,5 @@
 const updateTaskPriority = require("./updateTaskPriority");
-const toggleCategoryDone = require("./toggleCategoryDone");
+const toggleCategoryDone = require("./index");
 const sortToDos = require("./sortData");
 
 /**
