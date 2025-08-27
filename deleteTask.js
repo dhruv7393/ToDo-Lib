@@ -45,11 +45,8 @@ const deleteTask = (data, _id, name) => {
   updatedCategory.notDone = notDoneTasks;
   updatedCategory.total = updatedCategory.tasks.length;
 
-  // Use toggleCategoryDone at last on current category
-  updatedData = toggleCategoryDone(updatedData, _id);
-
   // Finally use sortToDos and return data
-  return sortToDos(updatedData);
+  return toggleCategoryDone(updatedData, _id);
 };
 
 module.exports = deleteTask;

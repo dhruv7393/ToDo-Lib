@@ -72,11 +72,8 @@ function addTask(data, _id, taskDetails) {
   updatedCategory.notDone += 1;
   updatedCategory.total += 1;
 
-  // Use toggleCategoryDone
-  const finalData = toggleCategoryDone(updatedData, _id);
-
   // Finally use sortToDos to return the data
-  return sortToDos(finalData);
+  return toggleCategoryDone(updatedData, _id);
 }
 
 module.exports = addTask;

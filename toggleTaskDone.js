@@ -1,5 +1,3 @@
-const updateTaskPriority = require("./updateTaskPriority");
-const toggleCategoryDone = require("./index");
 const sortToDos = require("./sortData");
 
 /**
@@ -26,27 +24,45 @@ const toggleTaskDone = (data, _id, name, status) => {
 
   const task = category.tasks[taskIdx];
 
+  const currentPriority = task.priority;
+
   // Update the task's done status
   task.done = status;
 
   let newPriority;
 
   if (status) {
-    // Task is marked done: set priority to length of task array + 1
-    newPriority = category.tasks.length + 1;
+    // Task is marked done: set priority to number of tasks in category
+    newPriority = category.tasks.length;
+
+    // Reduce priority by 1 for tasks with priority greater than current task's original priority
+    category.tasks.forEach((t) => {
+      if (t.name !== name && t.priority > currentPriority) {
+        t.priority -= 1;
+      }
+    });
   } else {
-    // Task is marked not done: find max priority of not done tasks + 1
-    const notDoneTasks = category.tasks.filter(
-      (t) => !t.done && t.name !== name
-    );
-    if (notDoneTasks.length === 0) {
-      // No other not done tasks, set priority to 1
-      newPriority = 1;
+    // Task is marked not done: increase priority by 1 for done tasks with priority < current task's original priority
+    const doneTasks = category.tasks.filter((t) => t.done && t.name !== name);
+
+    if (doneTasks.length === 0) {
+      // No done tasks, set priority to length of tasks in category
+      newPriority = category.tasks.length;
     } else {
-      const maxPriority = Math.max(...notDoneTasks.map((t) => t.priority));
-      newPriority = maxPriority + 1;
+      // Increase priority by 1 for done tasks with priority less than current task's original priority
+      category.tasks.forEach((t) => {
+        if (t.name !== name && t.done && t.priority < currentPriority) {
+          t.priority += 1;
+        }
+      });
+
+      // Reduce current task's priority by 1
+      newPriority = currentPriority - 1;
     }
   }
+
+  // Set the task's new priority
+  task.priority = newPriority;
 
   // Update category counters
   const doneTasks = category.tasks.filter((t) => t.done).length;
@@ -55,11 +71,18 @@ const toggleTaskDone = (data, _id, name, status) => {
   category.done = doneTasks;
   category.notDone = notDoneTasks;
 
-  // Use updateTaskPriority to set the new priority
-  const updatedData = updateTaskPriority(dataCopy, _id, name, newPriority);
+  // Update category's isMarkedDone status based on task completion
+  const allTasksDone = category.tasks.every((task) => task.done);
+  const allTasksNotDone = category.tasks.every((task) => !task.done);
 
-  // Pass the updated data to toggleCategoryDone to check category status
-  return sortToDos(toggleCategoryDone(updatedData, _id));
+  if (allTasksDone) {
+    category.isMarkedDone = true;
+  } else if (allTasksNotDone) {
+    category.isMarkedDone = false;
+  }
+  // For mixed states, keep current isMarkedDone status
+
+  return sortToDos(dataCopy);
 };
 
 module.exports = toggleTaskDone;

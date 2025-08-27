@@ -1,4 +1,3 @@
-const toggleTaskDone = require("./toggleTaskDone");
 const updateCategoryPriority = require("./updateCategoryPriority");
 const sortToDos = require("./sortData");
 
@@ -43,9 +42,15 @@ const toggleCategoryDone = (data, _id, status) => {
   if (currentIsMarkedDone !== newIsMarkedDone) {
     for (const task of category.tasks) {
       if (task.done !== newIsMarkedDone) {
-        dataCopy = toggleTaskDone(dataCopy, _id, task.name, newIsMarkedDone);
+        task.done = newIsMarkedDone;
       }
     }
+
+    // Update category counters
+    const doneTasks = category.tasks.filter((t) => t.done).length;
+    const notDoneTasks = category.tasks.length - doneTasks;
+    category.done = doneTasks;
+    category.notDone = notDoneTasks;
   }
 
   // Update category's isMarkedDone status
