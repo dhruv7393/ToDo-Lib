@@ -13,6 +13,17 @@ const updateCategoryPriority = require("./updateCategoryPriority");
 const getModifiedCategories = require("./modifiedCategories");
 const chron = require("./chron");
 const { daysOfWeek } = require("./chron");
+const {
+  getNumberOfCategoriesMarkedDone,
+  getNumberOfCategoriesMarkedNotDone,
+  categoryStatusNeedsUpdate,
+  taskStatusNeedsUpdate,
+  indexOfCategoryById,
+  getCurrentCategory,
+  getCurrentTask,
+  toggleTaskDoneStatus,
+  toggleCategoryDoneStatus,
+} = require("./utils");
 
 // Export all modules
 module.exports = {
@@ -37,6 +48,16 @@ module.exports = {
   getModifiedCategories,
   chron,
   daysOfWeek,
+
+  getNumberOfCategoriesMarkedDone,
+  getNumberOfCategoriesMarkedNotDone,
+  categoryStatusNeedsUpdate,
+  taskStatusNeedsUpdate,
+  indexOfCategoryById,
+  getCurrentCategory,
+  getCurrentTask,
+  toggleTaskDoneStatus,
+  toggleCategoryDoneStatus,
 
   // Default export for backward compatibility
   default: sortByKey,
