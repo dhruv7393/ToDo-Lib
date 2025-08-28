@@ -5,7 +5,7 @@ const {
   toggleTaskDoneStatus,
   categoryStatusNeedsUpdate,
   toggleCategoryDoneStatus,
-} = require("./utils");
+} = require("./utilsForVaccation");
 
 /**
  * Toggles the done status of a task and updates its priority accordingly.
@@ -16,10 +16,10 @@ const {
  * @returns {Array} - The updated array of categories.
  */
 const toggleTaskDone = (data, _id, name, status) => {
-  const dataCopy = JSON.parse(JSON.stringify(data));
+  let dataCopy = JSON.parse(JSON.stringify(data));
 
-  const currentCategory = getCurrentCategory(dataCopy, _id);
-  const indexOfCurrentCategory = indexOfCategoryById(dataCopy, _id);
+  let currentCategory = getCurrentCategory(dataCopy, _id);
+  let indexOfCurrentCategory = indexOfCategoryById(dataCopy, _id);
   currentCategory = toggleTaskDoneStatus(currentCategory, name, status);
   dataCopy[indexOfCurrentCategory] = currentCategory;
 

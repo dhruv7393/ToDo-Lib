@@ -1,6 +1,11 @@
-const updateTaskPriority = require("./updateTaskPriority");
-const toggleCategoryDone = require("./toggleCategoryDone");
 const sortToDos = require("./sortData");
+const {
+  getCurrentCategory,
+  getCurrentTask,
+  deleteTaskByName,
+  categoryStatusNeedsUpdate,
+  toggleCategoryDoneStatus,
+} = require("./utilsForVaccation");
 
 /**
  * Deletes a task from a particular category.
@@ -11,42 +16,17 @@ const sortToDos = require("./sortData");
  */
 const deleteTask = (data, _id, name) => {
   // Create a deep copy of data to avoid mutation
-  const dataCopy = JSON.parse(JSON.stringify(data));
-
-  // Find the category by _id
-  const categoryIdx = dataCopy.findIndex((cat) => cat._id === _id);
-  if (categoryIdx === -1) return sortToDos(dataCopy);
-
-  const category = dataCopy[categoryIdx];
-
-  // Find the task by name
-  const taskIdx = category.tasks.findIndex((task) => task.name === name);
-  if (taskIdx === -1) return sortToDos(dataCopy);
-
-  // Use updateTaskPriority to set the priority of task to max in category
-  const maxPriority = category.tasks.length;
-  let updatedData = updateTaskPriority(dataCopy, _id, name, maxPriority);
-
-  // Find the updated category and task after priority update
-  const updatedCategoryIdx = updatedData.findIndex((cat) => cat._id === _id);
-  const updatedCategory = updatedData[updatedCategoryIdx];
-  const updatedTaskIdx = updatedCategory.tasks.findIndex(
-    (task) => task.name === name
-  );
-
-  // Delete the task
-  updatedCategory.tasks.splice(updatedTaskIdx, 1);
-
-  // Update category counters
-  const doneTasks = updatedCategory.tasks.filter((t) => t.done).length;
-  const notDoneTasks = updatedCategory.tasks.length - doneTasks;
-
-  updatedCategory.done = doneTasks;
-  updatedCategory.notDone = notDoneTasks;
-  updatedCategory.total = updatedCategory.tasks.length;
-
-  // Finally use sortToDos and return data
-  return toggleCategoryDone(updatedData, _id);
+  let dataCopy = JSON.parse(JSON.stringify(data));
+  dataCopy = deleteTaskByName(dataCopy, _id, name);
+  let currentCategory = getCurrentCategory(dataCopy, _id);
+  if (categoryStatusNeedsUpdate(currentCategory)) {
+    dataCopy = toggleCategoryDoneStatus(
+      dataCopy,
+      currentCategory,
+      !currentCategory.isMarkedDone
+    );
+  }
+  return sortToDos(dataCopy);
 };
 
 module.exports = deleteTask;

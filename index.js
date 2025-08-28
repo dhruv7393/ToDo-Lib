@@ -23,7 +23,9 @@ const {
   getCurrentTask,
   toggleTaskDoneStatus,
   toggleCategoryDoneStatus,
-} = require("./utils");
+  deleteCategory,
+  deleteTaskByName,
+} = require("./utilsForVaccation");
 
 // Export all modules
 module.exports = {
@@ -58,6 +60,8 @@ module.exports = {
   getCurrentTask,
   toggleTaskDoneStatus,
   toggleCategoryDoneStatus,
+  deleteCategory,
+  deleteTaskByName,
 
   // Default export for backward compatibility
   default: sortByKey,
