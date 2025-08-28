@@ -79,6 +79,9 @@ const toggleTaskDone = (data, _id, name, status) => {
     category.isMarkedDone = true;
   } else if (allTasksNotDone) {
     category.isMarkedDone = false;
+  } else {
+    // Mixed states: set to false (especially when category was marked done but now has incomplete tasks)
+    category.isMarkedDone = false;
   }
   // For mixed states, keep current isMarkedDone status
 
