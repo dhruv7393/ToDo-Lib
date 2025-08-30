@@ -3,6 +3,14 @@ const deleteCategoryById = require("./deleteCategoryById");
 const updateTask = require("./UpdateTask");
 const getModifiedCategories = require("./modifiedCategories");
 const sortToDos = require("./sortData");
+const {
+  reaarangeVaccation,
+  toggleTaskDoneStatus,
+  deleteTaskByName,
+  toggleCategoryDoneStatus,
+  categoryStatusNeedsUpdate,
+} = require("./utilsForVaccation");
+const toggleTaskDone = require("./toggleTaskDone");
 
 // Array of days of week starting from Monday
 const daysOfWeek = [
@@ -23,68 +31,51 @@ const daysOfWeek = [
 function chron(data) {
   // Make a deep copy of data
   let dataCopy = JSON.parse(JSON.stringify(data));
-  const deletedCategories = [];
-
   const today = new Date();
-  const todayDateString = today.toLocaleDateString();
-  const todayDayOfWeek =
-    daysOfWeek[today.getDay() === 0 ? 6 : today.getDay() - 1]; // Adjust for Monday start
-  const todayDate = today.getDate();
+  const todaysDate = today.toLocaleDateString();
+  let possibleWhenValues = [
+    today.getDate().toString(),
+    daysOfWeek[today.getDay() === 0 ? 6 : today.getDay() - 1],
+  ];
 
-  // Iterate over all categories
-  for (let i = dataCopy.length - 1; i >= 0; i--) {
-    const category = dataCopy[i];
-
-    // Iterate over all tasks in each category
-    for (let j = category.tasks.length - 1; j >= 0; j--) {
-      const task = category.tasks[j];
-
-      // If task is done and canBeRepeated is false, delete task
+  dataCopy.forEach((category) => {
+    const { tasks } = category;
+    tasks.forEach((task) => {
       if (task.done && !task.canBeRepeated) {
-        dataCopy = deleteTask(dataCopy, category._id, task.name);
-        continue;
+        dataCopy = deleteTaskByName(dataCopy, category._id, task.name);
       }
+      if (
+        task.done &&
+        task.canBeRepeated &&
+        possibleWhenValues.some((val) => task.when?.includes(val))
+      ) {
+        dataCopy = toggleTaskDone(dataCopy, category._id, task.name, false);
+      }
+      if (Object.keys(task).includes("when") && task.when === todaysDate) {
+        task.canBeRepeated = false;
+        delete task.when;
+      }
+    });
+  });
 
-      // Process tasks with when property
-      if (task.when) {
-        // If when is equal to today's date string, remove when from task
-        if (task.when === todayDateString) {
-          dataCopy = updateTask(dataCopy, category._id, task.name, {
-            when: "",
-          });
-        }
-
-        // If when has a substring of today's day of week, set done as false
-        if (task.when.includes(todayDayOfWeek)) {
-          dataCopy = updateTask(dataCopy, category._id, task.name, {
-            done: false,
-          });
-        }
-
-        // If when is equal to today's date number, set done as false
-        if (task.when === todayDate.toString()) {
-          dataCopy = updateTask(dataCopy, category._id, task.name, {
-            done: false,
-          });
-        }
+  dataCopy.forEach((category) => {
+    let statusNeedsToBeUpdated = categoryStatusNeedsUpdate(category);
+    let newStatus = !category.isMarkedDone;
+    let hasRepeatableTasks = category.tasks.some((task) => task.canBeRepeated);
+    if (statusNeedsToBeUpdated) {
+      dataCopy = toggleCategoryDoneStatus(
+        dataCopy,
+        category,
+        !category.isMarkedDone
+      );
+      if (statusNeedsToBeUpdated && newStatus && !hasRepeatableTasks) {
+        dataCopy = deleteCategoryById(dataCopy, category._id);
       }
     }
+  });
 
-    // Check if category has no tasks and delete if empty
-    const updatedCategory = dataCopy.find((cat) => cat._id === category._id);
-    if (updatedCategory && updatedCategory.tasks.length === 0) {
-      deletedCategories.push(updatedCategory._id);
-      dataCopy = deleteCategoryById(dataCopy, updatedCategory._id);
-    }
-  }
-
-  // Return final object with updated data and deleted categories
-  return {
-    update: getModifiedCategories(sortToDos(data), sortToDos(dataCopy)),
-    delete: deletedCategories,
-  };
+  return dataCopy;
 }
 
 // Export both the main function and the daysOfWeek array
 module.exports = chron;
-module.exports.daysOfWeek = daysOfWeek;

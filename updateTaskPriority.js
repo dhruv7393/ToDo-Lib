@@ -1,4 +1,10 @@
 const sortToDos = require("./sortData");
+const {
+  getCurrentCategory,
+  indexOfCategoryById,
+  getCurrentTask,
+  reaarangeVaccation,
+} = require("./utilsForVaccation");
 
 /**
  * Updates the priority of a task within a category and rearranges task priorities accordingly.
@@ -9,47 +15,18 @@ const sortToDos = require("./sortData");
  * @returns {Array} - The updated array of categories.
  */
 const updateTaskPriority = (data, _id, name, newPriority) => {
-  const dataCopy = JSON.parse(JSON.stringify(data));
-  // Clone data to avoid mutation
-  const categories = [...dataCopy];
-  const categoryIdx = categories.findIndex((cat) => cat._id === _id);
-  if (categoryIdx === -1) return categories;
+  let dataCopy = JSON.parse(JSON.stringify(data));
 
-  const category = categories[categoryIdx];
-  const taskIdx = category.tasks.findIndex((task) => task.name === name);
-  if (taskIdx === -1) return categories;
-
-  const oldPriority = category.tasks[taskIdx].priority;
-
-  if (newPriority < oldPriority) {
-    // Increase priority of tasks between newPriority and oldPriority by 1
-    category.tasks.forEach((task) => {
-      if (
-        task.name !== name &&
-        task.priority >= newPriority &&
-        task.priority < oldPriority
-      ) {
-        task.priority += 1;
-      }
-    });
-  } else if (newPriority > oldPriority) {
-    // Decrease priority of tasks between oldPriority and newPriority by 1
-    category.tasks.forEach((task) => {
-      if (
-        task.name !== name &&
-        task.priority > oldPriority &&
-        task.priority <= newPriority
-      ) {
-        task.priority -= 1;
-      }
-    });
-  }
-
-  // Set the task's priority to newPriority
-  category.tasks[taskIdx].priority = newPriority;
-
-  // Use sortToDos to rearrange the categories and their tasks
-  return sortToDos(categories);
+  let currentCategory = getCurrentCategory(dataCopy, _id);
+  let currentCategoryIndex = indexOfCategoryById(dataCopy, _id);
+  let currentTask = getCurrentTask(currentCategory, name);
+  currentCategory.tasks = reaarangeVaccation(
+    currentCategory.tasks,
+    currentTask.priority,
+    newPriority
+  );
+  dataCopy[currentCategoryIndex] = currentCategory;
+  return sortToDos(dataCopy);
 };
 
 module.exports = updateTaskPriority;

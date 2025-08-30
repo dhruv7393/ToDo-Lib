@@ -41,7 +41,7 @@ const toggleTaskDoneStatus = (category, name, status) => {
         task.priority = status
           ? tasksFromPriority.length
           : category.notDone + 1;
-      } else if (task.priority > currentTaskPriority && status) {
+      } else if (task.priority >= currentTaskPriority && status) {
         task.priority -= 1; // Shift up tasks below
       } else if (
         task.priority > category.notDone &&
@@ -85,7 +85,7 @@ const toggleCategoryDoneStatus = (
           cat.done = status ? cat.tasks.length : 0;
           cat.notDone = status ? 0 : cat.tasks.length;
         }
-      } else if (cat.priority > currentCategoryPriority && status) {
+      } else if (cat.priority >= currentCategoryPriority && status) {
         cat.priority -= 1; // Shift up categories below
       } else if (
         cat.priority > categoriesNotDone &&
@@ -149,6 +149,87 @@ const deleteTaskByName = (data, _id, name) => {
   return dataCopy; // No change needed
 };
 
+const addNewCategory = (data, _id, name, color, border) => {
+  let dataCopy = Array.isArray(data) ? JSON.parse(JSON.stringify(data)) : [];
+  const numOfNotDoneCategories = getNumberOfCategoriesMarkedNotDone(dataCopy);
+  const newCategory = {
+    _id: _id,
+    name: name ? name : "New Category",
+    color: color ? color : "#FFFFFF",
+    border: border ? border : "#FFFFFF",
+    priority: numOfNotDoneCategories + 1,
+    done: 0,
+    notDone: 0,
+    total: 0,
+    isMarkedDone: false,
+    tasks: [],
+  };
+  dataCopy = dataCopy.map((cat) => {
+    if (cat.priority >= numOfNotDoneCategories) {
+      cat.priority += 1; // Shift down done categories
+    }
+    return cat;
+  });
+
+  dataCopy.push(newCategory);
+  return dataCopy;
+};
+
+const addNewTask = (data, _id, taskDetails) => {
+  const dataCopy = JSON.parse(JSON.stringify(data));
+  const currentCategory = getCurrentCategory(dataCopy, _id);
+  const currentCategoryIndex = indexOfCategoryById(dataCopy, _id);
+  const newTask = {
+    name: "New Task",
+    notes: "",
+    canBeRepeated: false,
+    ...taskDetails,
+    priority: category.tasks.length + 1,
+    done: false,
+  };
+  currentCategory = reaarangeVaccation(
+    currentCategory.tasks,
+    newTask.priority,
+    currentCategory.notDone + 1
+  );
+  currentCategory.notDone += 1;
+  currentCategory.total += 1;
+  currentCategory.tasks.push(newTask);
+  dataCopy[currentCategoryIndex] = currentCategory;
+  dataCopy = toggleCategoryDoneStatus(dataCopy, currentCategory, false);
+  return dataCopy;
+};
+
+const reaarangeVaccation = (list, oldPriority, newPriority) => {
+  let listCopy = JSON.parse(JSON.stringify(list));
+  let origin = oldPriority;
+  let destination = newPriority;
+  if (origin < destination) {
+    destination = destination <= list.length + 1 ? destination : list.length;
+    listCopy = listCopy.map((item) => {
+      if (item.priority === origin) {
+        item.priority = destination;
+      } else if (item.priority > origin && item.priority <= destination) {
+        item.priority -= 1; // Shift up items between origin and destination
+      }
+      return item;
+    });
+    return listCopy;
+  } else {
+    destination = destination >= 1 ? destination : 1;
+    listCopy = listCopy.map((item) => {
+      if (item.priority === origin) {
+        item.priority = destination;
+      } else if (item.priority < origin && item.priority >= destination) {
+        item.priority += 1; // Shift down items between destination and origin
+      }
+      return item;
+    });
+    return listCopy;
+  }
+  return listCopy;
+};
+
 module.exports = {
   getNumberOfCategoriesMarkedDone,
   getNumberOfCategoriesMarkedNotDone,
@@ -161,4 +242,7 @@ module.exports = {
   toggleCategoryDoneStatus,
   deleteCategory,
   deleteTaskByName,
+  addNewCategory,
+  addNewTask,
+  reaarangeVaccation,
 };

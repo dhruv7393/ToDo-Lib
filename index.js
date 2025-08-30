@@ -25,6 +25,9 @@ const {
   toggleCategoryDoneStatus,
   deleteCategory,
   deleteTaskByName,
+  addNewCategory,
+  addNewTask,
+  reaarangeVaccation,
 } = require("./utilsForVaccation");
 
 // Export all modules
@@ -62,6 +65,9 @@ module.exports = {
   toggleCategoryDoneStatus,
   deleteCategory,
   deleteTaskByName,
+  addNewCategory,
+  addNewTask,
+  reaarangeVaccation,
 
   // Default export for backward compatibility
   default: sortByKey,
