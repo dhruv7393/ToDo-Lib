@@ -1,4 +1,5 @@
 const sortByPriority = (data) => {
+  if (data.length === 1) return data;
   return data.sort((a, b) => {
     if (a.priority === b.priority) {
       return a.name.localeCompare(b.name);

@@ -10,7 +10,7 @@ const { addNewTask } = require("./utilsForVaccation");
  */
 function addTask(data, _id, taskDetails) {
   // Create a deep copy of data to avoid mutation
-  const dataCopy = JSON.parse(JSON.stringify(data));
+  let dataCopy = JSON.parse(JSON.stringify(data));
 
   dataCopy = addNewTask(dataCopy, _id, taskDetails);
 

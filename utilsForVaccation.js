@@ -176,25 +176,26 @@ const addNewCategory = (data, _id, name, color, border) => {
 };
 
 const addNewTask = (data, _id, taskDetails) => {
-  const dataCopy = JSON.parse(JSON.stringify(data));
-  const currentCategory = getCurrentCategory(dataCopy, _id);
-  const currentCategoryIndex = indexOfCategoryById(dataCopy, _id);
-  const newTask = {
+  let dataCopy = JSON.parse(JSON.stringify(data));
+  let currentCategory = getCurrentCategory(dataCopy, _id);
+  let currentCategoryIndex = indexOfCategoryById(dataCopy, _id);
+  let newTask = {
     name: "New Task",
     notes: "",
     canBeRepeated: false,
     ...taskDetails,
-    priority: category.tasks.length + 1,
+    priority: currentCategory.tasks.length + 1,
     done: false,
   };
-  currentCategory = reaarangeVaccation(
+
+  currentCategory.tasks.push(newTask);
+  currentCategory.tasks = reaarangeVaccation(
     currentCategory.tasks,
     newTask.priority,
     currentCategory.notDone + 1
   );
   currentCategory.notDone += 1;
   currentCategory.total += 1;
-  currentCategory.tasks.push(newTask);
   dataCopy[currentCategoryIndex] = currentCategory;
   dataCopy = toggleCategoryDoneStatus(dataCopy, currentCategory, false);
   return dataCopy;

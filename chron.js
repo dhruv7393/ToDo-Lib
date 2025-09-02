@@ -39,7 +39,7 @@ function chron(data) {
   ];
 
   dataCopy.forEach((category) => {
-    const { tasks } = category;
+    let { tasks } = category;
     tasks.forEach((task) => {
       if (task.done && !task.canBeRepeated) {
         dataCopy = deleteTaskByName(dataCopy, category._id, task.name);
