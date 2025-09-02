@@ -1,5 +1,6 @@
 const addCategory = require("../addCategory");
 const fs = require("fs");
+const { addNewTask } = require("../utilsForVaccation");
 
 const categories = [
   {
@@ -8,25 +9,28 @@ const categories = [
     color: "#FFFFFF",
     border: "#FFFFFF",
     priority: 1,
-    done: 0,
-    notDone: 0,
-    total: 0,
+    done: 1,
+    notDone: 1,
+    total: 2,
     isMarkedDone: false,
-    tasks: [],
-  },
-  {
-    _id: "002",
-    name: "Bname",
-    color: "#000000",
-    border: "#000000",
-    priority: 2,
-    done: 0,
-    notDone: 0,
-    total: 0,
-    isMarkedDone: true,
-    tasks: [],
+    tasks: [
+      {
+        name: "New Task",
+        notes: "",
+        canBeRepeated: false,
+        priority: 1,
+        done: false,
+      },
+      {
+        name: "New Task3",
+        notes: "",
+        canBeRepeated: false,
+        priority: 2,
+        done: true,
+      },
+    ],
   },
 ];
 
-const result = addCategory(categories, "003", "Zname", "#FFFFFF", "#FFFFFF");
+const result = addNewTask(categories, "001", { name: "New Task2" });
 fs.writeFileSync("output.json", JSON.stringify(result, null, 2));

@@ -5,34 +5,32 @@
     "color": "#FFFFFF",
     "border": "#FFFFFF",
     "priority": 1,
-    "done": 0,
-    "notDone": 0,
-    "total": 0,
+    "done": 1,
+    "notDone": 2,
+    "total": 3,
     "isMarkedDone": false,
-    "tasks": []
-  },
-  {
-    "_id": "003",
-    "name": "Zname",
-    "color": "#FFFFFF",
-    "border": "#FFFFFF",
-    "priority": 2,
-    "done": 0,
-    "notDone": 0,
-    "total": 0,
-    "isMarkedDone": false,
-    "tasks": []
-  },
-  {
-    "_id": "002",
-    "name": "Bname",
-    "color": "#000000",
-    "border": "#000000",
-    "priority": 3,
-    "done": 0,
-    "notDone": 0,
-    "total": 0,
-    "isMarkedDone": true,
-    "tasks": []
+    "tasks": [
+      {
+        "name": "New Task",
+        "notes": "",
+        "canBeRepeated": false,
+        "priority": 1,
+        "done": false
+      },
+      {
+        "name": "New Task3",
+        "notes": "",
+        "canBeRepeated": false,
+        "priority": 3,
+        "done": true
+      },
+      {
+        "name": "New Task2",
+        "notes": "",
+        "canBeRepeated": false,
+        "priority": 2,
+        "done": false
+      }
+    ]
   }
 ]
