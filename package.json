@@ -1,11 +1,14 @@
 {
   "name": "dhruvtodo",
-  "version": "2.0.53",
+  "version": "2.0.54",
   "description": "A comprehensive todo management library with task and category utilities, plus array sorting functions",
   "main": "index.js",
   "scripts": {
-    "test": "node test/test.js",
-    "prepublishOnly": "npm test"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "prepublishOnly": "npm run test:run"
   },
   "keywords": [
     "sort",
@@ -37,5 +40,11 @@
     "**/*.js",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.9",
+    "@vitest/ui": "^2.0.0",
+    "serve": "^14.2.0",
+    "vitest": "^2.0.0"
+  }
 }

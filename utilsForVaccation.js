@@ -165,7 +165,7 @@ const addNewCategory = (data, _id, name, color, border) => {
     tasks: [],
   };
   dataCopy = dataCopy.map((cat) => {
-    if (cat.priority >= numOfNotDoneCategories) {
+    if (cat.priority > numOfNotDoneCategories) {
       cat.priority += 1; // Shift down done categories
     }
     return cat;
