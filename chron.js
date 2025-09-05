@@ -32,7 +32,7 @@ function chron(data) {
   // Make a deep copy of data
   let dataCopy = JSON.parse(JSON.stringify(data));
   const today = new Date();
-  const todaysDate = today.toLocaleDateString();
+  const todaysDate = today.toISOString().split("T")[0];
   let possibleWhenValues = [
     today.getDate().toString(),
     daysOfWeek[today.getDay() === 0 ? 6 : today.getDay() - 1],
@@ -51,7 +51,10 @@ function chron(data) {
       ) {
         dataCopy = toggleTaskDone(dataCopy, category._id, task.name, false);
       }
-      if (Object.keys(task).includes("when") && task.when === todaysDate) {
+      if (
+        Object.keys(task).includes("when") &&
+        task.when.includes(todaysDate)
+      ) {
         task.canBeRepeated = false;
         delete task.when;
       }

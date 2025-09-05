@@ -104,7 +104,8 @@ const toggleCategoryDoneStatus = (
 const deleteCategory = (data, _id) => {
   let dataCopy = JSON.parse(JSON.stringify(data));
   let currentCategory = getCurrentCategory(dataCopy, _id);
-  if (currentCategory) {
+  const hasRepeats = currentCategory.tasks.some((task) => task.canBeRepeated);
+  if (!hasRepeats && currentCategory) {
     const currentCategoryPriority = currentCategory.priority;
     dataCopy = dataCopy
       .filter((cat) => cat._id !== _id)
