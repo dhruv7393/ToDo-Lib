@@ -1,38 +1,31 @@
 [
   {
-    "_id": "001",
+    "_id": "004",
     "name": "Zname",
     "color": "#FFFFFF",
     "border": "#FFFFFF",
-    "priority": 1,
-    "done": 0,
+    "priority": 0,
+    "done": 1,
     "notDone": 0,
-    "total": 0,
-    "isMarkedDone": false,
-    "tasks": []
-  },
-  {
-    "_id": "003",
-    "name": "Zname",
-    "color": "#FFFFFF",
-    "border": "#FFFFFF",
-    "priority": 2,
-    "done": 0,
-    "notDone": 0,
-    "total": 0,
-    "isMarkedDone": false,
-    "tasks": []
-  },
-  {
-    "_id": "002",
-    "name": "Bname",
-    "color": "#000000",
-    "border": "#000000",
-    "priority": 3,
-    "done": 0,
-    "notDone": 0,
-    "total": 0,
+    "total": 2,
     "isMarkedDone": true,
-    "tasks": []
+    "tasks": [
+      {
+        "name": "New Task1",
+        "notes": "",
+        "canBeRepeated": true,
+        "priority": 1,
+        "done": true,
+        "when": "Thursday"
+      },
+      {
+        "name": "New Task2",
+        "notes": "",
+        "canBeRepeated": true,
+        "priority": 2,
+        "done": true,
+        "when": "11"
+      }
+    ]
   }
 ]

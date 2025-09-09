@@ -35,7 +35,11 @@ const updateTask = (data, _id, taskName, updateDetails) => {
     };
   }
 
-  if (updateDetails.when !== undefined && updateDetails.when !== "") {
+  if (
+    updateDetails.when !== undefined &&
+    updateDetails.when !== "" &&
+    !updateDetails.when.includes(new Date().toISOString().slice(0, 10))
+  ) {
     currentTask = { ...currentTask, when: updateDetails.when };
   } else if (updateDetails.when === undefined || updateDetails.when === "") {
     // Remove when property if not present in updateDetails or if empty string
