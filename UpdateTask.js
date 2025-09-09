@@ -32,20 +32,16 @@ const updateTask = (data, _id, taskName, updateDetails) => {
     currentTask = {
       ...currentTask,
       canBeRepeated: updateDetails.canBeRepeated,
+      when: updateDetails.when,
     };
   }
 
   if (
-    updateDetails.when !== undefined &&
-    updateDetails.when !== "" &&
-    !updateDetails.when.includes(new Date().toISOString().slice(0, 10))
+    !updateDetails.canBeRepeated &&
+    updateDetails.when &&
+    updateDetails.when !== ""
   ) {
     currentTask = { ...currentTask, when: updateDetails.when };
-  } else if (updateDetails.when === undefined || updateDetails.when === "") {
-    // Remove when property if not present in updateDetails or if empty string
-    delete currentTask.when;
-    // Set canBeRepeated to false if updateDetails does not have when
-    currentTask.canBeRepeated = false;
   }
 
   currentCategory.tasks[currentTaskIndex] = currentTask;
